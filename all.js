@@ -244,7 +244,7 @@ var Special = function (_BaseSpecial) {
         }
       });
 
-      (0, _interactjs2.default)('.js-avito-month').dropzone({
+      (0, _interactjs2.default)('.js-avito-month:not([disabled])').dropzone({
         accept: '.js-avito-good',
         ondropactivate: function ondropactivate(event) {
           var good = event.relatedTarget;
@@ -275,6 +275,7 @@ var Special = function (_BaseSpecial) {
 
           good.style.display = 'none';
 
+          month.setAttribute('disabled', true);
           month.classList.remove('is-active');
           month.classList.add('is-selected');
           month.style.backgroundImage = 'url(' + good.dataset.img + ')';
@@ -285,6 +286,7 @@ var Special = function (_BaseSpecial) {
             good.dataset.x = 0;
             good.dataset.y = 0;
 
+            month.removeAttribute('disabled');
             month.classList.remove('is-selected');
             month.style.backgroundImage = '';
           }, { once: true });
