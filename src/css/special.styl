@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
+
+@import 'mq'
+@import 'functions'
+@import 'keyframes'
+
+$colors = {
+  white: #ffffff,
+  black: #000000
+}
+
+.avito-trends
+  position: relative
+  z-index: 99
+  width: 1060px
+  max-width: 100%
+  font-family: 'Ubuntu', 'Roboto', sans-serif
+  font-size: 16px
+  line-height: normal
+  text-size-adjust: 100%
+
+  & *
+  & *:before
+  & *:after
+    box-sizing: border-box
+
+  svg
+    display block
+    fill currentColor
+    pointer-events none
+
+  & b
+    font-weight: 700
+
+  & button
+    font-family: inherit
+    outline: none
+    cursor: pointer
+    appearance: none
+
+  &__bg
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    width: 100%
+    height: 100%
+    background-color: #00AAFF
+
+    ^[0].is-feed &
+      position: absolute
+
+  &-test
+    position: relative
+    display: flex
+    flex-direction: column
+    align-items: center
+    height: 480px
+    padding: 20px 15px 0
+
+    @media $mq.notMobile
+      height: 600px
+      padding: 30px 0 0
+
+    @media $mq.desktop
+      border: 3px solid #fff
+      border-radius: 10px
+      overflow: hidden
+
+      &.is-feed
+        border: none
+        border-radius: 0
+        overflow: visible
+
+    &__overlay
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      width: 100%
+      height: 100%
+      background: linear-gradient(to top, #000 0%, rgba(0,0,0,.75) 25%, rgba(0,0,0,.75) 100%)
+      visibility: hidden
+      opacity: 0
+      transform: translate3d(0,0,0)
+      transition: opacity .2s
+
+      ^[-1].is-active &
+        z-index: 5
+        visibility: visible
+        opacity: 1
+
+    &__overlay-text
+      position: absolute
+      bottom: 20px
+      left: 0
+      right: 0
+      width: 530px
+      max-width: 100%
+      margin: 0 auto
+      padding: 0 15px
+      color: #fff
+      font-size: 14px
+      line-height: 1.3em
+
+      @media $mq.notMobile
+        bottom: 35px
+        padding: 0
+        font-size: 18px
+        line-height: 1.5em
+
+      & p
+        padding: 0
+        margin: 0 !important
+
+      & a
+        color: inherit !important
+        border-bottom: 1px solid currentColor !important
+        transition: opacity .2s
+
+        &:hover
+          opacity: .6
+
+          @media $mq.notHover
+            opacity: 1
+
+    &__title
+      position: relative
+      z-index: 1
+      width: 640px
+      max-width: 100%
+      color: #fff
+      font-weight: 700
+      text-align: center
+
+      @media $mq.notMobile
+        font-size: 24px
+
+    &__months
+      position: relative
+      z-index: 10
+      width: 260px
+      max-width: 100%
+      margin-top: 24px
+
+      @media $mq.notMobile
+        width: 530px
+
+    &__goods
+      display: flex
+      align-items: flex-end
+      width: 290px
+      max-width: 100%
+      margin: auto 0 10px
+
+      @media $mq.notMobile
+        width: 590px
+
+  &-months
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    margin: -14px 0 0 -8px
+
+    @media $mq.notMobile
+      margin: -20px 0 0 -10px
+
+  &-months__item
+    width: 25%
+    padding: 14px 0 0 8px
+
+    @media $mq.notMobile
+      width: 16.6666%
+      padding: 20px 0 0 10px
+
+  &-month
+    position: relative
+    color: #70cfff
+    border-radius: 100%
+
+    &::before
+      content: ''
+      display: block
+      padding-top: 100%
+
+    &::after
+      content: attr(data-caption)
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      width: 100%
+      height: 100%
+      display: flex
+      justify-content: center
+      align-items: center
+
+      @media $mq.notMobile
+        font-size: 24px
+
+    & > svg
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      width: 100%
+      height: 100%
+
+    & > div
+      display: none
+      position: absolute
+      z-index: 1
+      top: 0
+      right: -5px
+      width: 20px
+      height: 20px
+      border-radius: 100%
+      background-color: #fff
+      transform: rotate(45deg)
+      cursor: pointer
+
+      &::before
+      &::after
+        content: ''
+        position: absolute
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        margin: auto
+        border-radius: 5px
+        background-color: #00AAFF
+
+      &::before
+        width: 12px
+        height: 2px
+
+      &::after
+        width: 2px
+        height: 12px
+
+    &.is-active
+      color: #97CF26
+
+    &.is-selected
+      background-position: center
+      background-size: cover
+
+      &::after
+      & > svg
+        display: none
+
+      & > div
+        display: block
+
+  &-good
+    position: absolute
+    z-index: 10
+    touch-action: none
+
+    &--coat
+      left: calc((100% -  290px) / 2 + 18px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 64px)
+
+    &--buzova
+      left: calc((100% - 320px) / 2 + 128px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 278px)
+
+    &--farm
+      left: calc((100% - 320px) / 2 + 102px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 232px)
+
+    &--furs
+      left: calc((100% - 320px) / 2 + 68px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 148px)
+
+    &--iphone
+      bottom: 78px
+      left: calc((100% - 320px) / 2 + 192px)
+
+      @media $mq.notMobile
+        bottom: 90px
+        left: calc((100% - 640px) / 2 + 380px)
+
+    &--jersey
+      left: calc((100% -  290px) / 2 + 46px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 116px)
+
+    &--kokoshnik
+      bottom: 78px
+      left: calc((100% -  290px) / 2 + 54px)
+
+      @media $mq.notMobile
+        bottom: 110px
+        left: calc((100% - 640px) / 2 + 124px)
+
+    &--priora
+      left: calc((100% - 320px) / 2 + 174px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 344px)
+
+    &--scooter
+      bottom: 62px
+      left: calc((100% - 320px) / 2 + 190px)
+
+      @media $mq.notMobile
+        bottom: 90px
+        left: calc((100% - 640px) / 2 + 380px)
+
+    &--shark
+      bottom: 86px
+      left: calc((100% - 320px) / 2 + 232px)
+
+      @media $mq.notMobile
+        bottom: 130px
+        left: calc((100% - 640px) / 2 + 440px)
+
+    &--sneakers
+      bottom: 68px
+      left: calc((100% - 320px) / 2 + 110px)
+
+      @media $mq.notMobile
+        bottom: 102px
+        left: calc((100% - 640px) / 2 + 254px)
+
+    @media $mq.mobile
+      transform: scale(.645)
+      transform-origin: left bottom
+
+    & > img
+      display: block
+
+    .is-active &
+      z-index: 1
+
+    &.is-active
+      position: relative
+      z-index: 10
+
+      &::after
+        content: attr(data-name)
+        position: absolute
+        top: 100%
+        left: 50%
+        margin-top: 4px
+        color: #97CF26
+        font-size: 18px
+        font-weight: 700
+        white-space: nowrap
+        text-align: center
+        transform: translate3d(-50%, 0, 0)
