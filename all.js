@@ -1115,7 +1115,10 @@ var Special = function (_BaseSpecial) {
       EL.main.appendChild(EL.mLogo);
 
       EL.enter = (0, _dom.makeElement)('div', CSS.main + '-enter');
-      EL.eImg = (0, _dom.makeElement)('img', CSS.main + '-enter__img');
+      EL.eImg = (0, _dom.makeElement)('img', CSS.main + '-enter__img', {
+        src: _data2.default.img,
+        srcset: _data2.default.img2x + ' 2x'
+      });
       EL.eInner = (0, _dom.makeElement)('div', CSS.main + '-enter__inner');
       EL.eHeadline = (0, _dom.makeElement)('div', CSS.main + '-enter__headline', {
         textContent: 'тест'
@@ -8605,6 +8608,8 @@ exports.default = {
   title: 'Пики хайпа',
   subtitle: 'Проверьте, насколько хорошо вы помните тренды 2018 года',
   text: '<p>Авито — камертон российского общества. Мы собрали товары, интерес к которым рос в разное время уходящего года. Среди них есть и хайповая акула «Блохэй», и обычный холодильник.</p><p>Перетащите предметы в ячейки и угадайте, в каком месяце они были на пике популярности.</p>',
+  img: 'https://leonardo.osnova.io/f0df8d37-0126-1084-9372-21d6bb3649f2/',
+  img2x: 'https://leonardo.osnova.io/ca023a75-748f-69d3-d954-951c57a19433/',
   hint: 'Перетащите товары в те месяцы,<br>когда они были популярны',
   months: [{
     name: 'Янв'

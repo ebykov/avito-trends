@@ -194,6 +194,7 @@
   }
 }
 .avito-trends-enter {
+  position: relative;
   width: 640px;
   max-width: 100%;
   min-height: 480px;
@@ -213,8 +214,8 @@
 }
 .avito-trends-enter__img {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  top: 190px;
+  left: 460px;
 }
 .avito-trends-enter__inner {
   position: relative;
