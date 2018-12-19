@@ -834,8 +834,6 @@ var CSS = {
 
 var EL = {};
 
-var months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
-
 var Special = function (_BaseSpecial) {
   _inherits(Special, _BaseSpecial);
 
@@ -864,8 +862,8 @@ var Special = function (_BaseSpecial) {
   }
 
   _createClass(Special, [{
-    key: 'getResult',
-    value: function getResult() {
+    key: 'getCountCorrectAnswers',
+    value: function getCountCorrectAnswers() {
       var _this2 = this;
 
       var correctAnswers = 0;
@@ -887,27 +885,49 @@ var Special = function (_BaseSpecial) {
   }, {
     key: 'confirm',
     value: function confirm() {
-      this.correctAnswers = this.getResult();
+      var _this3 = this;
+
+      this.correctAnswers = this.getCountCorrectAnswers();
 
       EL.main.classList.add('is-confirmed');
 
-      EL.tfResult.innerHTML = '\u042F \u0440\u0430\u0437\u043B\u043E\u0436\u0438\u043B \u043F\u043E \u043C\u0435\u0441\u044F\u0446\u0430\u043C<br>\u043D\u0430 ' + this.correctAnswers + '/' + _data2.default.goods.length;
+      EL.test.removeChild(EL.tConfirmBtn);
 
-      EL.tFinish.insertBefore(EL.tfInner, EL.tFinish.firstChild);
+      var months = document.querySelectorAll('.js-avito-month');
+      [].slice.call(months).forEach(function (item, i) {
+        if (_this3.answers[i] === _data2.default.goods[i].id) {
+          item.classList.add('is-correct');
+        } else {
+          item.classList.add('is-incorrect');
+        }
+      });
 
-      EL.tfBtn.dataset.click = 'complete';
-      EL.tfBtn.textContent = 'Завершить';
+      setTimeout(function () {
+        _this3.complete();
+      }, 2500);
+
+      // EL.tfResult.innerHTML = `Я разложил по месяцам<br>на ${this.correctAnswers}/${Data.goods.length}`;
+      //
+      // EL.tFinish.insertBefore(EL.tfInner, EL.tFinish.firstChild);
+      //
+      // EL.tfBtn.dataset.click = 'complete';
+      // EL.tfBtn.textContent = 'Завершить';
     }
   }, {
     key: 'complete',
     value: function complete() {
+      var result = Special.getResult(this.correctAnswers);
+
       EL.main.classList.remove('is-testing');
       EL.main.classList.remove('is-confirmed');
       EL.main.classList.add('is-result');
 
+      EL.rImg.src = result.img;
+      EL.rImg.srcset = result.img2x + ' 2x';
+
       EL.rHeadline.textContent = this.correctAnswers + ' \u0438\u0437 ' + _data2.default.goods.length + ' \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0445 \u043E\u0442\u0432\u0435\u0442\u043E\u0432';
-      EL.rTitile.innerHTML = 'Я — ферма<br>для майнинга';
-      EL.rSubtitle.textContent = 'Когда-то был на хайпе';
+      EL.rTitile.innerHTML = result.title;
+      EL.rSubtitle.textContent = result.subtitle;
 
       EL.mInner.replaceChild(EL.result, EL.test);
 
@@ -932,7 +952,7 @@ var Special = function (_BaseSpecial) {
   }, {
     key: 'init',
     value: function init() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.setInitialParams();
 
@@ -986,7 +1006,7 @@ var Special = function (_BaseSpecial) {
 
           good.classList.add('is-active');
           EL.test.classList.add('is-active');
-          EL.tOverlayText.innerHTML = _data2.default.goods[index].text;
+          // EL.tOverlayText.innerHTML = Data.goods[index].text;
         },
         ondropdeactivate: function ondropdeactivate(event) {
           var good = event.relatedTarget;
@@ -1008,7 +1028,7 @@ var Special = function (_BaseSpecial) {
           var good = event.relatedTarget;
           var goodIndex = good.dataset.index;
 
-          _this3.answers[monthIndex] = _data2.default.goods[goodIndex].id;
+          _this4.answers[monthIndex] = _data2.default.goods[goodIndex].id;
 
           // console.log(this.answers, this.answers.length);
 
@@ -1019,12 +1039,21 @@ var Special = function (_BaseSpecial) {
           month.classList.add('is-selected');
           month.style.backgroundImage = 'url(' + good.dataset.img + ')';
 
-          if (Object.keys(_this3.answers).length === _data2.default.goods.length) {
-            EL.test.appendChild(EL.tFinish);
+          if (_data2.default.months[monthIndex].text) {
+            EL.tTitle.innerHTML = _data2.default.months[monthIndex].text;
+
+            clearTimeout(_this4.hintTimer);
+            _this4.hintTimer = setTimeout(function () {
+              EL.tTitle.innerHTML = _data2.default.hint;
+            }, 2000);
+          }
+
+          if (Object.keys(_this4.answers).length === _data2.default.goods.length) {
+            EL.test.appendChild(EL.tConfirmBtn);
           }
 
           rm.addEventListener('click', function () {
-            _this3.answers[monthIndex] = undefined;
+            _this4.answers[monthIndex] = undefined;
 
             good.style.display = 'block';
             good.style.webkitTransform = good.style.transform = '';
@@ -1035,9 +1064,8 @@ var Special = function (_BaseSpecial) {
             month.classList.remove('is-selected');
             month.style.backgroundImage = '';
 
-            if (Object.keys(_this3.answers).length === _data2.default.goods.length && EL.test.contains(EL.tFinish)) {
-              console.log('yo');
-              EL.test.removeChild(EL.tFinish);
+            if (Object.keys(_this4.answers).length === _data2.default.goods.length && EL.test.contains(EL.tConfirmBtn)) {
+              EL.test.removeChild(EL.tConfirmBtn);
             }
           }, { once: true });
         }
@@ -1072,7 +1100,7 @@ var Special = function (_BaseSpecial) {
         textContent: _data2.default.subtitle
       });
       EL.eText = (0, _dom.makeElement)('div', CSS.main + '-enter__text', {
-        textContent: _data2.default.text
+        innerHTML: _data2.default.text
       });
       EL.eBtn = (0, _dom.makeElement)('button', CSS.main + '-enter__btn', {
         textContent: 'Начать',
@@ -1092,21 +1120,21 @@ var Special = function (_BaseSpecial) {
 
       EL.test = (0, _dom.makeElement)('div', CSS.main + '-test');
       EL.tOverlay = (0, _dom.makeElement)('div', CSS.main + '-test__overlay');
-      EL.tOverlayText = (0, _dom.makeElement)('div', CSS.main + '-test__overlay-text');
+      // EL.tOverlayText = makeElement('div', `${CSS.main}-test__overlay-text`);
       EL.tTitle = (0, _dom.makeElement)('div', CSS.main + '-test__title', {
-        innerHTML: 'Перетащите товары в те месяцы,<br>когда они были популярны'
+        innerHTML: _data2.default.hint
       });
       EL.tMonths = (0, _dom.makeElement)('div', CSS.main + '-test__months');
 
       EL.months = (0, _dom.makeElement)('div', CSS.main + '-months');
 
-      months.forEach(function (item, i) {
+      _data2.default.months.forEach(function (item, i) {
         var monthWrap = (0, _dom.makeElement)('div', CSS.main + '-months__item');
         var month = (0, _dom.makeElement)('div', [CSS.main + '-month', 'js-avito-month'], {
           innerHTML: '<div></div>' + _svg2.default.circle,
           data: {
             index: i,
-            caption: item
+            caption: item.name
           }
         });
 
@@ -1122,25 +1150,32 @@ var Special = function (_BaseSpecial) {
         EL.tGoods.innerHTML += '<div class="' + CSS.main + '-good ' + CSS.main + '-good--' + item.id + ' js-avito-good" data-index="' + i + '" data-img="' + item.fillImg + '" data-name="' + item.name + '"><img src="' + item.img + '" srcset="' + item.img2x + ' 2x" alt=""></div>';
       });
 
-      EL.tOverlay.appendChild(EL.tOverlayText);
+      // EL.tOverlay.appendChild(EL.tOverlayText);
 
-      EL.tFinish = (0, _dom.makeElement)('div', CSS.main + '-test__finish');
-      EL.tfInner = (0, _dom.makeElement)('div', CSS.main + '-test__finish-inner');
-      EL.tfResult = (0, _dom.makeElement)('div', CSS.main + '-test__finish-result');
-      EL.tfShow = (0, _dom.makeElement)('div', CSS.main + '-test__finish-show', {
-        textContent: 'Показать правильные ответы для всех'
-      });
-      EL.tfBtn = (0, _dom.makeElement)('button', CSS.main + '-test__finish-btn', {
+      // EL.tFinish = makeElement('div', `${CSS.main}-test__finish`);
+      // EL.tfInner = makeElement('div', `${CSS.main}-test__finish-inner`);
+      // EL.tfResult = makeElement('div', `${CSS.main}-test__finish-result`);
+      // EL.tfShow = makeElement('div', `${CSS.main}-test__finish-show`, {
+      //   textContent: 'Показать правильные ответы для всех',
+      // });
+      // EL.tfBtn = makeElement('button', `${CSS.main}-test__finish-btn`, {
+      //   textContent: 'Подтвердить',
+      //   data: {
+      //     click: 'confirm',
+      //   },
+      // });
+      //
+      // EL.tfInner.appendChild(EL.tfResult);
+      // EL.tfInner.appendChild(EL.tfShow);
+      //
+      // EL.tFinish.appendChild(EL.tfBtn);
+
+      EL.tConfirmBtn = (0, _dom.makeElement)('button', CSS.main + '-test__confirm-btn', {
         textContent: 'Подтвердить',
         data: {
           click: 'confirm'
         }
       });
-
-      EL.tfInner.appendChild(EL.tfResult);
-      EL.tfInner.appendChild(EL.tfShow);
-
-      EL.tFinish.appendChild(EL.tfBtn);
 
       EL.test.appendChild(EL.tOverlay);
       EL.test.appendChild(EL.tTitle);
@@ -1148,10 +1183,7 @@ var Special = function (_BaseSpecial) {
       EL.test.appendChild(EL.tGoods);
 
       EL.result = (0, _dom.makeElement)('div', CSS.main + '-result');
-      EL.rImg = (0, _dom.makeElement)('img', CSS.main + '-result__img', {
-        src: 'https://leonardo.osnova.io/89f40a3f-cbf0-ffcd-a79c-536e768b14fc/',
-        srcset: 'https://leonardo.osnova.io/9da88a0c-d4ca-201c-d72e-a3cbbc34f013/ 2x'
-      });
+      EL.rImg = (0, _dom.makeElement)('img', CSS.main + '-result__img');
       EL.rHead = (0, _dom.makeElement)('div', CSS.main + '-result__head');
       EL.rHeadline = (0, _dom.makeElement)('div', CSS.main + '-result__headline');
       EL.rTitile = (0, _dom.makeElement)('div', CSS.main + '-result__title');
@@ -1193,6 +1225,20 @@ var Special = function (_BaseSpecial) {
       EL.result.appendChild(EL.rBottom);
 
       EL.mInner.appendChild(EL.enter);
+    }
+  }, {
+    key: 'getResult',
+    value: function getResult(score) {
+      var result = '';
+      _data2.default.results.some(function (item) {
+        if (item.range[0] <= score && item.range[1] >= score) {
+          result = item;
+          return true;
+        }
+        return false;
+      });
+
+      return result;
     }
   }]);
 
@@ -8536,96 +8582,150 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
   title: 'Пики хайпа',
-  subtitle: 'Вспоминаем 2018 год по товарам на Авито',
-  text: 'Мы выбрали товары, интерес к которым рос в разное время уходящего года. Среди них есть и хайповый «Блохэй», и обычный холодильник. Вам нужно перетаскивать предметы на месяца, угадывая, когда они были на пике популярности.',
+  subtitle: 'Проверьте, насколько хорошо вы помните тренды 2018 года',
+  text: '<p>Авито — камертон российского общества. Мы собрали товары, интерес к которым рос в разное время уходящего года. Среди них есть и хайповая акула «Блохэй», и обычный холодильник.</p><p>Перетащите предметы в ячейки и угадайте, в каком месяце они были на пике популярности.</p>',
+  hint: 'Перетащите товары в те месяцы,<br>когда они были популярны',
+  months: [{
+    name: 'Янв'
+  }, {
+    name: 'Фев',
+    text: 'В этом месяце Авито запустил возможность сохранять черновики объявлений.'
+  }, {
+    name: 'Мар'
+  }, {
+    name: 'Апр',
+    text: 'В этом месяце пользователи Авито смогли заключать безопасные сделки с доставкой.'
+  }, {
+    name: 'Май',
+    text: 'В этом месяце пользователи Авито смогли искать автомобили по заданному радиусу на карте.'
+  }, {
+    name: 'Июн',
+    text: 'В этом месяце Авито запустил онлайн-бронирование в краткосрочной аренде.'
+  }, {
+    name: 'Июл',
+    text: 'В этом месяце Авито запустил выездную диагностику автомобиля перед покупкой «Точка сделки».'
+  }, {
+    name: 'Авг',
+    text: 'В этом месяце Авито запустил новые фильтры и рубрикатор категорий.'
+  }, {
+    name: 'Сен',
+    text: 'В этом месяце Авито запустил рейтинги и отзывы.'
+  }, {
+    name: 'Окт',
+    text: 'В этом месяце Авито запустил поиск недвижимости по карте.'
+  }, {
+    name: 'Ноя',
+    text: 'В этом месяце Авито запустил подписку на продавца.'
+  }, {
+    name: 'Дек'
+  }],
   goods: [{
     id: 'farm',
     name: 'Ферма',
-    text: '',
     img: 'https://leonardo.osnova.io/d7f5884b-63a3-3dcd-e2fc-7b6f375e14a4/',
     img2x: 'https://leonardo.osnova.io/109287fe-35fe-e1b5-3e93-d3a0b116eb4a/',
-    fillImg: 'https://leonardo.osnova.io/583953ea-0eb3-1209-0020-fc6d9f81fc5a/'
+    fillImg: 'https://leonardo.osnova.io/86360545-953a-29be-f212-fddec5ba42ad/'
   }, {
     id: 'jersey',
     name: 'Олимпийская форма 2018',
-    text: 'В этом месяце Авито запустил возможность сохранять черновики объявлений.',
     img: 'https://leonardo.osnova.io/1c7977b5-45cc-3e01-f341-0ceff4b51249/',
     img2x: 'https://leonardo.osnova.io/04485667-498f-39f9-b8f1-682c667e50f6/',
-    fillImg: 'https://leonardo.osnova.io/5ce8df51-f78c-a53f-8de1-cac67f5e36b2/'
+    fillImg: 'https://leonardo.osnova.io/06203626-f92f-39f7-9ffd-40e921a95e0a/'
   }, {
     id: 'coat',
     name: 'Пальто',
-    text: '',
     img: 'https://leonardo.osnova.io/ee3a1a44-d84d-fbc4-361d-c9e10603f538/',
     img2x: 'https://leonardo.osnova.io/e240d2fc-2e03-5078-c351-f108e6c74abd/',
-    fillImg: 'https://leonardo.osnova.io/600f7534-1473-f4ed-df86-43ba33a26884/'
+    fillImg: 'https://leonardo.osnova.io/c759ffbd-a251-e7ee-d12b-4f3b3e5f6cbd/'
   }, {
     id: 'sneakers',
     name: 'Кроссовки',
-    text: 'В этом месяце пользователи Авито смогли заключать безопасные сделки с доставкой.',
     img: 'https://leonardo.osnova.io/88ac0b9c-102a-1f4a-73f8-2daefc03b06d/',
     img2x: 'https://leonardo.osnova.io/cf831544-804b-0529-8a21-7d9a000a3bf6/',
-    fillImg: 'https://leonardo.osnova.io/56fe7820-e772-fb2f-d569-74a628d86c1d/'
+    fillImg: 'https://leonardo.osnova.io/5416fb06-a138-ed3c-2a00-dd7e9792accc/'
   }, {
     id: 'scooter',
     name: 'Электросамокат',
-    text: 'В этом месяце пользователи Авито смогли искать автомобили по заданному радиусу на карте.',
     img: 'https://leonardo.osnova.io/0dad94cf-037e-7b47-3c0e-d06fb4a5fc27/',
     img2x: 'https://leonardo.osnova.io/d6ee3961-c16d-1080-322a-d2d1c1bfa403/',
-    fillImg: 'https://leonardo.osnova.io/28ee5d89-c8bf-3afd-7972-c28d8b5708ec/'
+    fillImg: 'https://leonardo.osnova.io/87a0b0df-6cca-23a1-a199-e9946072d7eb/'
   }, {
     id: 'priora',
     name: 'Приора',
-    text: 'В этом месяце Авито запустил онлайн-бронирование в краткосрочной аренде.',
     img: 'https://leonardo.osnova.io/e907b988-4c83-852b-fada-d42656f76db3/',
     img2x: 'https://leonardo.osnova.io/94fdd430-4609-b93d-f58a-eaddfd50cc0e/',
-    fillImg: 'https://leonardo.osnova.io/ee9a1d8f-d118-f201-8f64-3bdeafb9c7e6/'
+    fillImg: 'https://leonardo.osnova.io/a98549a5-3acc-7fba-90a2-c58832924c21/'
   }, {
     id: 'kokoshnik',
     name: 'Кокошник',
-    text: 'В этом месяце Авито запустил выездную диагностику автомобиля перед покупкой «Точка сделки».',
     img: 'https://leonardo.osnova.io/4aa11369-25f6-27ac-bd42-d38af03886d6/',
     img2x: 'https://leonardo.osnova.io/9cfc409d-41b4-67d3-c595-101a9f7baf87/',
-    fillImg: 'https://leonardo.osnova.io/1655a4b7-80a9-291c-3a53-a842dded81f2/'
+    fillImg: 'https://leonardo.osnova.io/e3c50deb-b71a-0023-da2f-bb98238ab64a/'
   }, {
     id: 'fridge',
     name: 'Холодильник',
-    text: 'В этом месяце Авито запустил новые фильтры и рубрикатор категорий.',
     img: 'https://leonardo.osnova.io/df294ec8-07ae-5e3f-b0eb-fcd12aa85199/',
     img2x: 'https://leonardo.osnova.io/895efabd-6f08-6f45-27ff-cc25419bb723/',
-    fillImg: 'https://leonardo.osnova.io/5ff5b5b4-5cbe-beb9-aa27-ae92655aa75e/'
+    fillImg: 'https://leonardo.osnova.io/beca7eb8-5fed-f0df-da87-a0cc39a2ae1b/'
   }, {
     id: 'iphone',
     name: 'iPhone',
-    text: 'В этом месяце Авито запустил рейтинги и отзывы.',
     img: 'https://leonardo.osnova.io/8498746b-cd9d-3b51-fe26-d14333cfc394/',
     img2x: 'https://leonardo.osnova.io/dbd50a38-6300-4208-c6cd-dbac66e051fc/',
-    fillImg: 'https://leonardo.osnova.io/3ecc6399-48bb-4753-32e0-cdcace0397f7/'
+    fillImg: 'https://leonardo.osnova.io/28a0e9c0-17b8-6634-9a09-e84c392eaf05/'
   }, {
     id: 'shark',
     name: 'Акула из IKEA',
-    text: 'В этом месяце Авито запустил поиск недвижимости по карте.',
     img: 'https://leonardo.osnova.io/df5422a7-235b-eac6-9d8c-3580eb1f6377/',
     img2x: 'https://leonardo.osnova.io/8ad9190f-7eb9-0b10-2cff-5e1062696f21/',
-    fillImg: 'https://leonardo.osnova.io/50b6cecd-c44f-ba1b-dcea-33ee219296cb/'
+    fillImg: 'https://leonardo.osnova.io/a0c9117b-0c62-62a3-014d-0d6398f757e0/'
   }, {
     id: 'buzova',
     name: 'Картонная Бузова',
-    text: 'В этом месяце Авито запустил подписку на продавца.',
     img: 'https://leonardo.osnova.io/32b0ada2-2452-4e98-f27a-4df4ce1bc8cd/',
     img2x: 'https://leonardo.osnova.io/559d7d3f-4573-57b3-6b8b-a337b9973a0b/',
-    fillImg: 'https://leonardo.osnova.io/ad37b6d4-90ad-f088-b73a-67f467ec8341/'
+    fillImg: 'https://leonardo.osnova.io/2864fef8-f069-15cd-7e0f-a024cf69d437/'
   }, {
     id: 'furs',
     name: 'Норковая шуба',
-    text: '',
     img: 'https://leonardo.osnova.io/7cdcf820-1914-25ff-e308-67761c19b39b/',
     img2x: 'https://leonardo.osnova.io/56fa0fb5-f5ee-59ad-3c00-7c0eecdf75e3/',
-    fillImg: 'https://leonardo.osnova.io/d4f56da9-7b7d-271b-8a99-6210f658a463/'
+    fillImg: 'https://leonardo.osnova.io/68c260c9-c264-834c-e9f6-446a1897b1ee/'
   }],
   result: {
     text: 'Мы выбрали товары, интерес к которым рос в разное время уходящего года. Среди них есть и хайповый «Блохэй», и обычный холодильник. Вам нужно перетаскивать предметы на месяца, угадывая, когда они были на пике популярности.'
-  }
+  },
+  results: [{
+    range: [0, 1],
+    title: 'Я —<br>Блохэй',
+    subtitle: 'Хыыыыы',
+    img: 'https://leonardo.osnova.io/536ca994-bb7e-f9e4-858d-8abed5c3ee0a/',
+    img2x: 'https://leonardo.osnova.io/2155f02f-8171-07ff-a754-48112277e977/'
+  }, {
+    range: [2, 4],
+    title: 'Я — ферма<br>для майнинга',
+    subtitle: 'Когда-то был на хайпе',
+    img: 'https://leonardo.osnova.io/89f40a3f-cbf0-ffcd-a79c-536e768b14fc/',
+    img2x: 'https://leonardo.osnova.io/9da88a0c-d4ca-201c-d72e-a3cbbc34f013/'
+  }, {
+    range: [5, 7],
+    title: 'Я —<br>кокошник',
+    subtitle: 'Всегда в тренде',
+    img: 'https://leonardo.osnova.io/3be15cac-66a8-9266-51c7-4e9aebebd2e8/',
+    img2x: 'https://leonardo.osnova.io/772ee741-34f0-7b59-2e00-e4929d0605ca/'
+  }, {
+    range: [8, 11],
+    title: 'Я — картонная<br>Бузова',
+    subtitle: 'Хайповая, но бесполезная',
+    img: 'https://leonardo.osnova.io/51a9b777-ec8a-ec31-eb19-29d21277eae2/',
+    img2x: 'https://leonardo.osnova.io/fc831ebf-3821-632a-0448-46f8a1668211/'
+  }, {
+    range: [12, 12],
+    title: 'Я — шапка<br>Хабиба',
+    subtitle: 'Всегда вне конкуренции',
+    img: 'https://leonardo.osnova.io/cfe5b6d8-476c-25d8-39cf-576edd624da4/',
+    img2x: 'https://leonardo.osnova.io/fc537a1e-d740-ad96-13a4-492edb202967/'
+  }]
 };
 
 /***/ }),

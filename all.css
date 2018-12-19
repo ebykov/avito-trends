@@ -167,7 +167,7 @@
 }
 @media (min-width: 1025px) {
   .avito-trends-enter__btn {
-    margin-top: 160px;
+    margin-top: 120px;
   }
 }
 .avito-trends-enter__btn:hover {
@@ -221,50 +221,12 @@
   visibility: visible;
   opacity: 1;
 }
-.avito-trends-test__overlay-text {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  width: 530px;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 15px;
-  color: #fff;
-  font-size: 14px;
-  line-height: 1.3em;
-}
-@media (min-width: 680px) {
-  .avito-trends-test__overlay-text {
-    bottom: 35px;
-    padding: 0;
-    font-size: 18px;
-    line-height: 1.5em;
-  }
-}
-.avito-trends-test__overlay-text p {
-  padding: 0;
-  margin: 0 !important;
-}
-.avito-trends-test__overlay-text a {
-  color: inherit !important;
-  border-bottom: 1px solid currentColor !important;
-  -webkit-transition: opacity 0.2s;
-  transition: opacity 0.2s;
-}
-.avito-trends-test__overlay-text a:hover {
-  opacity: 0.6;
-}
-@media (hover: none), (hover: on-demand) {
-  .avito-trends-test__overlay-text a:hover {
-    opacity: 1;
-  }
-}
 .avito-trends-test__title {
   position: relative;
   z-index: 1;
   width: 640px;
   max-width: 100%;
+  margin-bottom: 24px;
   color: #fff;
   font-weight: 700;
   text-align: center;
@@ -274,17 +236,25 @@
     font-size: 24px;
   }
 }
+.avito-trends.is-confirmed .avito-trends-test__title {
+  display: none;
+}
 .avito-trends-test__months {
   position: relative;
   z-index: 10;
   width: 260px;
   max-width: 100%;
-  margin-top: 24px;
 }
 @media (min-width: 680px) {
   .avito-trends-test__months {
     width: 530px;
   }
+}
+.avito-trends.is-confirmed .avito-trends-test__months {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate3d(0, -50%, 0);
+          transform: translate3d(0, -50%, 0);
 }
 .avito-trends-test__goods {
   display: -webkit-box;
@@ -302,70 +272,16 @@
     width: 590px;
   }
 }
-.avito-trends-test__finish {
+.avito-trends-test__confirm-btn {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 100%;
-}
-@media (min-width: 680px) {
-  .avito-trends-test__finish {
-    bottom: 40px;
-  }
-}
-.avito-trends-test__finish-result {
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.375em;
-  text-align: center;
-}
-@media (min-width: 680px) {
-  .avito-trends-test__finish-result {
-    font-size: 24px;
-  }
-}
-.avito-trends-test__finish-show {
-  margin-top: 10px;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  opacity: 0.6;
-  -webkit-transition: opacity 0.2s;
-  transition: opacity 0.2s;
-}
-@media (min-width: 680px) {
-  .avito-trends-test__finish-show {
-    margin-top: 24px;
-    font-size: 18px;
-  }
-}
-.avito-trends-test__finish-show:hover {
-  opacity: 1;
-}
-@media (hover: none), (hover: on-demand) {
-  .avito-trends-test__finish-show:hover {
-    opacity: 0.6;
-  }
-}
-.avito-trends-test__finish-btn {
   display: block;
   width: 200px;
   height: 44px;
   padding: 0;
-  margin: 0;
-  margin-top: 20px;
+  margin: 0 auto;
   border: 0;
   color: #0af;
   font-size: 18px;
@@ -375,18 +291,18 @@
   transition: opacity 0.2s;
 }
 @media (min-width: 680px) {
-  .avito-trends-test__finish-btn {
+  .avito-trends-test__confirm-btn {
+    bottom: 40px;
     width: 268px;
     height: 70px;
-    margin-top: 50px;
     font-size: 24px;
   }
 }
-.avito-trends-test__finish-btn:hover {
+.avito-trends-test__confirm-btn:hover {
   opacity: 0.6;
 }
 @media (hover: none), (hover: on-demand) {
-  .avito-trends-test__finish-btn:hover {
+  .avito-trends-test__confirm-btn:hover {
     opacity: 1;
   }
 }
@@ -501,6 +417,7 @@
 }
 .avito-trends-month.is-selected {
   background-position: center;
+  background-color: #a169f7;
   background-size: cover;
 }
 .avito-trends-month.is-selected::after,
@@ -509,6 +426,12 @@
 }
 .avito-trends-month.is-selected > div {
   display: block;
+}
+.avito-trends-month.is-correct {
+  background-color: #97cf26;
+}
+.avito-trends-month.is-incorrect {
+  background-color: #ff6163;
 }
 .avito-trends-good {
   position: absolute;
