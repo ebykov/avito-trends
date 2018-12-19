@@ -1,4 +1,58 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,500,700);
+.animated {
+  -webkit-animation-duration: 400ms;
+          animation-duration: 400ms;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}
+.fadeOutDown {
+  -webkit-animation-name: fadeOutDown;
+          animation-name: fadeOutDown;
+}
+.fadeOutUp {
+  -webkit-animation-name: fadeOutUp;
+          animation-name: fadeOutUp;
+}
+@-webkit-keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 100%, 0);
+  }
+}
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 100%, 0);
+  }
+}
+@-webkit-keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0);
+  }
+}
 .avito-trends {
   position: relative;
   z-index: 99;
@@ -226,24 +280,28 @@
   z-index: 1;
   width: 640px;
   max-width: 100%;
-  margin-bottom: 24px;
+  min-height: 54px;
+  margin-bottom: 10px;
   color: #fff;
   font-weight: 700;
   text-align: center;
 }
 @media (min-width: 680px) {
   .avito-trends-test__title {
-    font-size: 24px;
+    min-height: 52px;
+    margin-bottom: 24px;
+    font-size: 22px;
   }
-}
-.avito-trends.is-confirmed .avito-trends-test__title {
-  display: none;
 }
 .avito-trends-test__months {
   position: relative;
   z-index: 10;
   width: 260px;
   max-width: 100%;
+  -webkit-transition: -webkit-transform 0.2s 0.2s;
+  transition: -webkit-transform 0.2s 0.2s;
+  transition: transform 0.2s 0.2s;
+  transition: transform 0.2s 0.2s, -webkit-transform 0.2s 0.2s;
 }
 @media (min-width: 680px) {
   .avito-trends-test__months {
@@ -251,10 +309,14 @@
   }
 }
 .avito-trends.is-confirmed .avito-trends-test__months {
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translate3d(0, -50%, 0);
-          transform: translate3d(0, -50%, 0);
+  -webkit-transform: translate3d(0, 45px, 0);
+          transform: translate3d(0, 45px, 0);
+}
+@media (min-width: 680px) {
+  .avito-trends.is-confirmed .avito-trends-test__months {
+    -webkit-transform: translate3d(0, 110px, 0);
+            transform: translate3d(0, 110px, 0);
+  }
 }
 .avito-trends-test__goods {
   display: -webkit-box;

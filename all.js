@@ -811,7 +811,9 @@ var _share = __webpack_require__(14);
 
 var Share = _interopRequireWildcard(_share);
 
-var _svg = __webpack_require__(33);
+var _animate = __webpack_require__(33);
+
+var _svg = __webpack_require__(34);
 
 var _svg2 = _interopRequireDefault(_svg);
 
@@ -891,8 +893,6 @@ var Special = function (_BaseSpecial) {
 
       EL.main.classList.add('is-confirmed');
 
-      EL.test.removeChild(EL.tConfirmBtn);
-
       var months = document.querySelectorAll('.js-avito-month');
       [].slice.call(months).forEach(function (item, i) {
         if (_this3.answers[i] === _data2.default.goods[i].id) {
@@ -902,16 +902,17 @@ var Special = function (_BaseSpecial) {
         }
       });
 
+      (0, _animate.animate)(EL.tTitle, 'fadeOutUp').then(function () {
+        EL.tTitle.style.opacity = 0;
+      });
+
+      (0, _animate.animate)(EL.tConfirmBtn, 'fadeOutDown').then(function () {
+        EL.test.removeChild(EL.tConfirmBtn);
+      });
+
       setTimeout(function () {
         _this3.complete();
       }, 2500);
-
-      // EL.tfResult.innerHTML = `Я разложил по месяцам<br>на ${this.correctAnswers}/${Data.goods.length}`;
-      //
-      // EL.tFinish.insertBefore(EL.tfInner, EL.tFinish.firstChild);
-      //
-      // EL.tfBtn.dataset.click = 'complete';
-      // EL.tfBtn.textContent = 'Завершить';
     }
   }, {
     key: 'complete',
@@ -947,7 +948,9 @@ var Special = function (_BaseSpecial) {
     key: 'setInitialParams',
     value: function setInitialParams() {
       this.answers = {};
+      this.answersCount = 0;
       this.correctAnswers = 0;
+      this.hintShowed = 2;
     }
   }, {
     key: 'init',
@@ -1029,8 +1032,7 @@ var Special = function (_BaseSpecial) {
           var goodIndex = good.dataset.index;
 
           _this4.answers[monthIndex] = _data2.default.goods[goodIndex].id;
-
-          // console.log(this.answers, this.answers.length);
+          _this4.answersCount += 1;
 
           good.style.display = 'none';
 
@@ -1039,21 +1041,39 @@ var Special = function (_BaseSpecial) {
           month.classList.add('is-selected');
           month.style.backgroundImage = 'url(' + good.dataset.img + ')';
 
-          if (_data2.default.months[monthIndex].text) {
-            EL.tTitle.innerHTML = _data2.default.months[monthIndex].text;
+          // if (this.hintShowed === 2 && Data.months[monthIndex].text) {
+          //   this.hintShowed = 0;
+          //   EL.tTitle.innerHTML = Data.months[monthIndex].text;
+          //
+          //   clearTimeout(this.hintTimer);
+          //   this.hintTimer = setTimeout(() => {
+          //     EL.tTitle.innerHTML = Data.hint;
+          //   }, 2000);
+          // }
 
-            clearTimeout(_this4.hintTimer);
-            _this4.hintTimer = setTimeout(function () {
-              EL.tTitle.innerHTML = _data2.default.hint;
-            }, 2000);
+          if (_this4.hintShowed === 2) {
+            console.log('show hint');
+            _this4.hintShowed = 0;
+
+            if (_data2.default.months[monthIndex].text) {
+              EL.tTitle.innerHTML = _data2.default.months[monthIndex].text;
+
+              clearTimeout(_this4.hintTimer);
+              _this4.hintTimer = setTimeout(function () {
+                EL.tTitle.innerHTML = _data2.default.hint;
+              }, 2000);
+            }
+          } else {
+            _this4.hintShowed += 1;
           }
 
-          if (Object.keys(_this4.answers).length === _data2.default.goods.length) {
+          if (_this4.answersCount === _data2.default.goods.length) {
             EL.test.appendChild(EL.tConfirmBtn);
           }
 
           rm.addEventListener('click', function () {
             _this4.answers[monthIndex] = undefined;
+            _this4.answersCount -= 1;
 
             good.style.display = 'block';
             good.style.webkitTransform = good.style.transform = '';
@@ -1064,7 +1084,7 @@ var Special = function (_BaseSpecial) {
             month.classList.remove('is-selected');
             month.style.backgroundImage = '';
 
-            if (Object.keys(_this4.answers).length === _data2.default.goods.length && EL.test.contains(EL.tConfirmBtn)) {
+            if (EL.test.contains(EL.tConfirmBtn)) {
               EL.test.removeChild(EL.tConfirmBtn);
             }
           }, { once: true });
@@ -9625,6 +9645,85 @@ module.exports = function (value) {
 
 /***/ }),
 /* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function requestAnimate(options) {
+
+    var start = performance.now();
+
+    requestAnimationFrame(function animate(time) {
+        var timeFraction = (time - start) / options.duration;
+        if (timeFraction > 1) timeFraction = 1;
+
+        var progress = options.timing(timeFraction);
+
+        options.draw(progress);
+
+        if (timeFraction < 1) {
+            requestAnimationFrame(animate);
+        }
+    });
+}
+
+function one(node, type, callback) {
+    type = type.split(' ');
+
+    var _loop = function _loop(i) {
+        var func = function func(e) {
+            for (var j = 0; j < type.length; j++) {
+                e.currentTarget.removeEventListener(type[j], func);
+            }
+            return callback(e);
+        };
+        node.addEventListener(type[i], func, false);
+    };
+
+    for (var i = 0; i < type.length; i++) {
+        _loop(i);
+    }
+}
+
+function animate(elem, className) {
+    var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    var delay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+    return new Promise(function (resolve, reject) {
+        one(elem, 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            if (duration) {
+                elem.style.animationDuration = '';
+            }
+            if (delay) {
+                elem.style.animationDelay = '';
+            }
+            elem.classList.remove(className);
+            elem.classList.remove('animated');
+
+            resolve();
+        });
+
+        if (duration) {
+            elem.style.animationDuration = duration;
+        }
+        if (delay) {
+            elem.style.animationDelay = delay;
+        }
+
+        elem.classList.add(className);
+        elem.classList.add('animated');
+    });
+}
+
+exports.animate = animate;
+exports.requestAnimate = requestAnimate;
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
