@@ -1233,12 +1233,12 @@ var Special = function (_BaseSpecial) {
         innerHTML: _svg2.default.logo
       });
       EL.rText = (0, _dom.makeElement)('div', CSS.main + '-result__text', {
-        textContent: _data2.default.result.text
+        textContent: _data2.default.promo.text
       });
       EL.rBtn = (0, _dom.makeElement)('a', CSS.main + '-result__btn', {
         href: '#',
         target: '_blank',
-        textContent: 'Промо'
+        textContent: 'Искать'
       });
 
       EL.rHead.appendChild(EL.rHeadline);
@@ -8725,8 +8725,8 @@ exports.default = {
     img2x: 'https://leonardo.osnova.io/cfcaa7f8-dd61-782d-515e-281dc9b7c7e9/',
     fillImg: 'https://leonardo.osnova.io/68c260c9-c264-834c-e9f6-446a1897b1ee/'
   }],
-  result: {
-    text: 'Мы выбрали товары, интерес к которым рос в разное время уходящего года. Среди них есть и хайповый «Блохэй», и обычный холодильник. Вам нужно перетаскивать предметы на месяца, угадывая, когда они были на пике популярности.'
+  promo: {
+    text: 'Всё вокруг меняется очень быстро. Каждый месяц — новые тренды. И Авито постоянно запускает новые фичи и сервисы, чтобы вам было проще и удобнее искать то, что вам нужно. И продавать то, что нужно другим.'
   },
   results: [{
     range: [0, 1],
