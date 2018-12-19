@@ -1238,7 +1238,7 @@ var Special = function (_BaseSpecial) {
       EL.rBtn = (0, _dom.makeElement)('a', CSS.main + '-result__btn', {
         href: '#',
         target: '_blank',
-        textContent: 'Искать'
+        textContent: 'Начать'
       });
 
       EL.rHead.appendChild(EL.rHeadline);
