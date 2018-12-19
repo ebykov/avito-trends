@@ -942,7 +942,18 @@ var Special = function (_BaseSpecial) {
   }, {
     key: 'restart',
     value: function restart() {
-      console.log('restart');
+      EL.main.classList.remove('is-result');
+
+      EL.tTitle.style.opacity = '';
+
+      var leaveList = EL.months.querySelectorAll('.js-avito-month-leave');
+      [].slice.call(leaveList).forEach(function (leave) {
+        leave.click();
+      });
+
+      EL.mInner.replaceChild(EL.test, EL.result);
+
+      this.setInitialParams();
     }
   }, {
     key: 'setInitialParams',
@@ -1027,7 +1038,7 @@ var Special = function (_BaseSpecial) {
         ondrop: function ondrop(event) {
           var month = event.target;
           var monthIndex = month.dataset.index;
-          var rm = month.querySelector('div');
+          var monthLeave = month.querySelector('.js-avito-month-leave');
           var good = event.relatedTarget;
           var goodIndex = good.dataset.index;
 
@@ -1041,28 +1052,22 @@ var Special = function (_BaseSpecial) {
           month.classList.add('is-selected');
           month.style.backgroundImage = 'url(' + good.dataset.img + ')';
 
-          // if (this.hintShowed === 2 && Data.months[monthIndex].text) {
-          //   this.hintShowed = 0;
-          //   EL.tTitle.innerHTML = Data.months[monthIndex].text;
-          //
-          //   clearTimeout(this.hintTimer);
-          //   this.hintTimer = setTimeout(() => {
-          //     EL.tTitle.innerHTML = Data.hint;
-          //   }, 2000);
-          // }
-
-          if (_this4.hintShowed === 2) {
+          if (_this4.hintShowed >= 2 && _data2.default.months[monthIndex].text) {
             console.log('show hint');
             _this4.hintShowed = 0;
 
-            if (_data2.default.months[monthIndex].text) {
+            (0, _animate.animate)(EL.tTitle, 'fadeOut', '200ms').then(function () {
               EL.tTitle.innerHTML = _data2.default.months[monthIndex].text;
-
-              clearTimeout(_this4.hintTimer);
-              _this4.hintTimer = setTimeout(function () {
-                EL.tTitle.innerHTML = _data2.default.hint;
-              }, 2000);
-            }
+              (0, _animate.animate)(EL.tTitle, 'fadeIn', '400ms', '100ms').then(function () {
+                clearTimeout(_this4.hintTimer);
+                _this4.hintTimer = setTimeout(function () {
+                  (0, _animate.animate)(EL.tTitle, 'fadeOut', '200ms').then(function () {
+                    EL.tTitle.innerHTML = _data2.default.hint;
+                    (0, _animate.animate)(EL.tTitle, 'fadeIn', '400ms', '100ms');
+                  });
+                }, 2000);
+              });
+            });
           } else {
             _this4.hintShowed += 1;
           }
@@ -1071,7 +1076,7 @@ var Special = function (_BaseSpecial) {
             EL.test.appendChild(EL.tConfirmBtn);
           }
 
-          rm.addEventListener('click', function () {
+          monthLeave.addEventListener('click', function () {
             _this4.answers[monthIndex] = undefined;
             _this4.answersCount -= 1;
 
@@ -1082,6 +1087,8 @@ var Special = function (_BaseSpecial) {
 
             month.removeAttribute('disabled');
             month.classList.remove('is-selected');
+            month.classList.remove('is-correct');
+            month.classList.remove('is-incorrect');
             month.style.backgroundImage = '';
 
             if (EL.test.contains(EL.tConfirmBtn)) {
@@ -1151,7 +1158,7 @@ var Special = function (_BaseSpecial) {
       _data2.default.months.forEach(function (item, i) {
         var monthWrap = (0, _dom.makeElement)('div', CSS.main + '-months__item');
         var month = (0, _dom.makeElement)('div', [CSS.main + '-month', 'js-avito-month'], {
-          innerHTML: '<div></div>' + _svg2.default.circle,
+          innerHTML: '<div class="js-avito-month-leave"></div>' + _svg2.default.circle,
           data: {
             index: i,
             caption: item.name
@@ -1166,29 +1173,23 @@ var Special = function (_BaseSpecial) {
 
       EL.tGoods = (0, _dom.makeElement)('div', CSS.main + '-test__goods');
 
+      EL.goodsList = [];
       _data2.default.goods.forEach(function (item, i) {
-        EL.tGoods.innerHTML += '<div class="' + CSS.main + '-good ' + CSS.main + '-good--' + item.id + ' js-avito-good" data-index="' + i + '" data-img="' + item.fillImg + '" data-name="' + item.name + '"><img src="' + item.img + '" srcset="' + item.img2x + ' 2x" alt=""></div>';
+        var good = (0, _dom.makeElement)('div', [CSS.main + '-good', CSS.main + '-good--' + item.id, 'js-avito-good'], {
+          innerHTML: '<img src="' + item.img + '" srcset="' + item.img2x + ' 2x" alt="">',
+          data: {
+            index: i,
+            img: item.fillImg,
+            name: item.name
+          }
+        });
+        EL.goodsList.push(good);
+        // EL.tGoods.innerHTML += `<div class="${CSS.main}-good ${CSS.main}-good--${item.id} js-avito-good" data-index="${i}" data-img="${item.fillImg}" data-name="${item.name}"><img src="${item.img}" srcset="${item.img2x} 2x" alt=""></div>`;
       });
 
-      // EL.tOverlay.appendChild(EL.tOverlayText);
-
-      // EL.tFinish = makeElement('div', `${CSS.main}-test__finish`);
-      // EL.tfInner = makeElement('div', `${CSS.main}-test__finish-inner`);
-      // EL.tfResult = makeElement('div', `${CSS.main}-test__finish-result`);
-      // EL.tfShow = makeElement('div', `${CSS.main}-test__finish-show`, {
-      //   textContent: 'Показать правильные ответы для всех',
-      // });
-      // EL.tfBtn = makeElement('button', `${CSS.main}-test__finish-btn`, {
-      //   textContent: 'Подтвердить',
-      //   data: {
-      //     click: 'confirm',
-      //   },
-      // });
-      //
-      // EL.tfInner.appendChild(EL.tfResult);
-      // EL.tfInner.appendChild(EL.tfShow);
-      //
-      // EL.tFinish.appendChild(EL.tfBtn);
+      EL.goodsList.forEach(function (item) {
+        return EL.tGoods.appendChild(item);
+      });
 
       EL.tConfirmBtn = (0, _dom.makeElement)('button', CSS.main + '-test__confirm-btn', {
         textContent: 'Подтвердить',
@@ -8635,7 +8636,7 @@ exports.default = {
     text: 'В этом месяце Авито запустил поиск недвижимости по карте.'
   }, {
     name: 'Ноя',
-    text: 'В этом месяце Авито запустил подписку на продавца.'
+    text: 'А ещё в ноябре Авито запустил подписку на продавца.'
   }, {
     name: 'Дек'
   }],
@@ -8678,8 +8679,8 @@ exports.default = {
   }, {
     id: 'kokoshnik',
     name: 'Кокошник',
-    img: 'https://leonardo.osnova.io/4aa11369-25f6-27ac-bd42-d38af03886d6/',
-    img2x: 'https://leonardo.osnova.io/9cfc409d-41b4-67d3-c595-101a9f7baf87/',
+    img: 'https://leonardo.osnova.io/ac2cc380-df19-5280-0a82-99311ea317e3/',
+    img2x: 'https://leonardo.osnova.io/1b1b1ae5-3644-d268-1f59-a954d9320dc1/',
     fillImg: 'https://leonardo.osnova.io/e3c50deb-b71a-0023-da2f-bb98238ab64a/'
   }, {
     id: 'fridge',
@@ -8708,8 +8709,8 @@ exports.default = {
   }, {
     id: 'furs',
     name: 'Норковая шуба',
-    img: 'https://leonardo.osnova.io/7cdcf820-1914-25ff-e308-67761c19b39b/',
-    img2x: 'https://leonardo.osnova.io/56fa0fb5-f5ee-59ad-3c00-7c0eecdf75e3/',
+    img: 'https://leonardo.osnova.io/59066853-f797-4223-62db-9553d7f34f68/',
+    img2x: 'https://leonardo.osnova.io/cfcaa7f8-dd61-782d-515e-281dc9b7c7e9/',
     fillImg: 'https://leonardo.osnova.io/68c260c9-c264-834c-e9f6-446a1897b1ee/'
   }],
   result: {
@@ -8717,31 +8718,31 @@ exports.default = {
   },
   results: [{
     range: [0, 1],
-    title: 'Я —<br>Блохэй',
+    title: 'Я как<br>Блохэй',
     subtitle: 'Хыыыыы',
     img: 'https://leonardo.osnova.io/536ca994-bb7e-f9e4-858d-8abed5c3ee0a/',
     img2x: 'https://leonardo.osnova.io/2155f02f-8171-07ff-a754-48112277e977/'
   }, {
     range: [2, 4],
-    title: 'Я — ферма<br>для майнинга',
+    title: 'Я как ферма<br>для майнинга',
     subtitle: 'Когда-то был на хайпе',
     img: 'https://leonardo.osnova.io/89f40a3f-cbf0-ffcd-a79c-536e768b14fc/',
     img2x: 'https://leonardo.osnova.io/9da88a0c-d4ca-201c-d72e-a3cbbc34f013/'
   }, {
     range: [5, 7],
-    title: 'Я —<br>кокошник',
+    title: 'Я как<br>кокошник',
     subtitle: 'Всегда в тренде',
     img: 'https://leonardo.osnova.io/3be15cac-66a8-9266-51c7-4e9aebebd2e8/',
     img2x: 'https://leonardo.osnova.io/772ee741-34f0-7b59-2e00-e4929d0605ca/'
   }, {
     range: [8, 11],
-    title: 'Я — картонная<br>Бузова',
+    title: 'Я как картонная<br>Бузова',
     subtitle: 'Хайповая, но бесполезная',
     img: 'https://leonardo.osnova.io/51a9b777-ec8a-ec31-eb19-29d21277eae2/',
     img2x: 'https://leonardo.osnova.io/fc831ebf-3821-632a-0448-46f8a1668211/'
   }, {
     range: [12, 12],
-    title: 'Я — шапка<br>Хабиба',
+    title: 'Я как шапка<br>Хабиба',
     subtitle: 'Всегда вне конкуренции',
     img: 'https://leonardo.osnova.io/cfe5b6d8-476c-25d8-39cf-576edd624da4/',
     img2x: 'https://leonardo.osnova.io/fc537a1e-d740-ad96-13a4-492edb202967/'
