@@ -708,7 +708,7 @@
 }
 @media (min-width: 1025px) {
   .avito-trends-result {
-    padding: 50px 0;
+    min-height: 600px;
   }
 }
 .avito-trends-result__img {
@@ -808,7 +808,7 @@
 @media (min-width: 680px) {
   .avito-trends-result__bottom {
     margin-top: 44px;
-    padding: 30px 30px 25px;
+    padding: 25px 30px;
   }
 }
 .avito-trends-result__logo {

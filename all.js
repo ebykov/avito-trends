@@ -912,16 +912,14 @@ var Special = function (_BaseSpecial) {
 
       setTimeout(function () {
         _this3.complete();
-      }, 2500);
+      }, 2000);
     }
   }, {
     key: 'complete',
     value: function complete() {
-      var result = Special.getResult(this.correctAnswers);
+      var _this4 = this;
 
-      EL.main.classList.remove('is-testing');
-      EL.main.classList.remove('is-confirmed');
-      EL.main.classList.add('is-result');
+      var result = Special.getResult(this.correctAnswers);
 
       EL.rImg.src = result.img;
       EL.rImg.srcset = result.img2x + ' 2x';
@@ -930,13 +928,22 @@ var Special = function (_BaseSpecial) {
       EL.rTitile.innerHTML = result.title;
       EL.rSubtitle.textContent = result.subtitle;
 
-      EL.mInner.replaceChild(EL.result, EL.test);
+      (0, _animate.animate)(EL.test, 'fadeOut', '200ms').then(function () {
+        EL.mInner.removeChild(EL.test);
 
-      (0, _dom.removeChildren)(EL.rShare);
-      Share.make(EL.rShare, {
-        url: this.params.share.url + '/' + this.correctAnswers,
-        title: this.params.share.title,
-        twitter: this.params.share.title
+        EL.main.classList.remove('is-testing');
+        EL.main.classList.remove('is-confirmed');
+        EL.main.classList.add('is-result');
+
+        EL.mInner.appendChild(EL.result);
+        (0, _dom.removeChildren)(EL.rShare);
+        Share.make(EL.rShare, {
+          url: _this4.params.share.url + '/' + _this4.correctAnswers,
+          title: _this4.params.share.title,
+          twitter: _this4.params.share.title
+        });
+
+        (0, _animate.animate)(EL.result, 'fadeIn', '400ms');
       });
     }
   }, {
@@ -966,7 +973,7 @@ var Special = function (_BaseSpecial) {
   }, {
     key: 'init',
     value: function init() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.setInitialParams();
 
@@ -1042,8 +1049,8 @@ var Special = function (_BaseSpecial) {
           var good = event.relatedTarget;
           var goodIndex = good.dataset.index;
 
-          _this4.answers[monthIndex] = _data2.default.goods[goodIndex].id;
-          _this4.answersCount += 1;
+          _this5.answers[monthIndex] = _data2.default.goods[goodIndex].id;
+          _this5.answersCount += 1;
 
           good.style.display = 'none';
 
@@ -1052,15 +1059,15 @@ var Special = function (_BaseSpecial) {
           month.classList.add('is-selected');
           month.style.backgroundImage = 'url(' + good.dataset.img + ')';
 
-          if (_this4.hintShowed >= 2 && _data2.default.months[monthIndex].text) {
+          if (_this5.hintShowed >= 2 && _data2.default.months[monthIndex].text) {
             console.log('show hint');
-            _this4.hintShowed = 0;
+            _this5.hintShowed = 0;
 
             (0, _animate.animate)(EL.tTitle, 'fadeOut', '200ms').then(function () {
               EL.tTitle.innerHTML = _data2.default.months[monthIndex].text;
               (0, _animate.animate)(EL.tTitle, 'fadeIn', '400ms', '100ms').then(function () {
-                clearTimeout(_this4.hintTimer);
-                _this4.hintTimer = setTimeout(function () {
+                clearTimeout(_this5.hintTimer);
+                _this5.hintTimer = setTimeout(function () {
                   (0, _animate.animate)(EL.tTitle, 'fadeOut', '200ms').then(function () {
                     EL.tTitle.innerHTML = _data2.default.hint;
                     (0, _animate.animate)(EL.tTitle, 'fadeIn', '400ms', '100ms');
@@ -1069,16 +1076,16 @@ var Special = function (_BaseSpecial) {
               });
             });
           } else {
-            _this4.hintShowed += 1;
+            _this5.hintShowed += 1;
           }
 
-          if (_this4.answersCount === _data2.default.goods.length) {
+          if (_this5.answersCount === _data2.default.goods.length) {
             EL.test.appendChild(EL.tConfirmBtn);
           }
 
           monthLeave.addEventListener('click', function () {
-            _this4.answers[monthIndex] = undefined;
-            _this4.answersCount -= 1;
+            _this5.answers[monthIndex] = undefined;
+            _this5.answersCount -= 1;
 
             good.style.display = 'block';
             good.style.webkitTransform = good.style.transform = '';
@@ -8615,30 +8622,30 @@ exports.default = {
     name: 'Янв'
   }, {
     name: 'Фев',
-    text: 'В этом месяце Авито запустил возможность сохранять черновики объявлений.'
+    text: 'А ещё в феврале Авито запустил возможность сохранять черновики объявлений.'
   }, {
     name: 'Мар'
   }, {
     name: 'Апр',
-    text: 'В этом месяце пользователи Авито смогли заключать безопасные сделки с доставкой.'
+    text: 'А ещё в апреле пользователи Авито смогли заключать безопасные сделки с доставкой.'
   }, {
     name: 'Май',
-    text: 'В этом месяце пользователи Авито смогли искать автомобили по заданному радиусу на карте.'
+    text: 'А ещё в мае пользователи Авито смогли искать автомобили по заданному радиусу на карте.'
   }, {
     name: 'Июн',
-    text: 'В этом месяце Авито запустил онлайн-бронирование в краткосрочной аренде.'
+    text: 'А ещё в июне Авито запустил онлайн-бронирование в краткосрочной аренде.'
   }, {
     name: 'Июл',
-    text: 'В этом месяце Авито запустил выездную диагностику автомобиля перед покупкой «Точка сделки».'
+    text: 'А ещё в июле Авито запустил выездную диагностику автомобиля перед покупкой «Точка сделки».'
   }, {
     name: 'Авг',
-    text: 'В этом месяце Авито запустил новые фильтры и рубрикатор категорий.'
+    text: 'А ещё в августе Авито запустил новые фильтры и рубрикатор категорий.'
   }, {
     name: 'Сен',
-    text: 'В этом месяце Авито запустил рейтинги и отзывы.'
+    text: 'А ещё в сентябре Авито запустил рейтинги и отзывы.'
   }, {
     name: 'Окт',
-    text: 'В этом месяце Авито запустил поиск недвижимости по карте.'
+    text: 'А ещё в октябре Авито запустил поиск недвижимости по карте.'
   }, {
     name: 'Ноя',
     text: 'А ещё в ноябре Авито запустил подписку на продавца.'
