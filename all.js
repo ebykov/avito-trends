@@ -952,6 +952,8 @@ var Special = function (_BaseSpecial) {
       EL.main.classList.remove('is-result');
       EL.main.classList.add('is-testing');
 
+      EL.tTitle.style.opacity = '';
+
       var leaveList = EL.months.querySelectorAll('.js-avito-month-leave');
       [].slice.call(leaveList).forEach(function (leave) {
         leave.click();
