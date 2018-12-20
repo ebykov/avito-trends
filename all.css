@@ -562,11 +562,15 @@
   position: relative;
   color: #70cfff;
   border-radius: 100%;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 .avito-trends-month::before {
   content: '';
   display: block;
   padding-top: 100%;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 .avito-trends-month::after {
   content: attr(data-caption);
@@ -586,6 +590,8 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 @media (min-width: 680px) {
   .avito-trends-month::after {
@@ -611,8 +617,8 @@
   height: 20px;
   border-radius: 100%;
   background-color: #fff;
-  -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+  -webkit-transform: translate3d(0, 0, 0) rotate(45deg);
+          transform: translate3d(0, 0, 0) rotate(45deg);
   cursor: pointer;
 }
 .avito-trends.is-confirmed .avito-trends-month > div {
@@ -629,6 +635,8 @@
   margin: auto;
   border-radius: 5px;
   background-color: #0af;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 .avito-trends-month > div::before {
   width: 12px;
@@ -664,6 +672,8 @@
   z-index: 10;
   -ms-touch-action: none;
       touch-action: none;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 .avito-trends-good--farm {
   z-index: 13;
@@ -864,6 +874,8 @@
 }
 .avito-trends-good > img {
   display: block;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 .is-active .avito-trends-good {
   z-index: 1;
