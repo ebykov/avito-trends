@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,500,700');
 
 @import 'mq'
 @import 'functions'
 @import 'keyframes'
 
 $colors = {
-  white: #ffffff,
-  black: #000000
+  main: #00AAFF,
+  extra: #A169F7,
 }
 
 .avito-trends
@@ -46,10 +46,135 @@ $colors = {
     right: 0
     width: 100%
     height: 100%
-    background-color: #00AAFF
+    background-color: $colors.main
 
     ^[0].is-feed &
       position: absolute
+
+  &__inner
+    position: relative
+    z-index: 1
+
+    @media $mq.desktop
+      border: 3px solid #fff
+      border-radius: 10px
+      overflow: hidden
+
+      ^[0].is-feed &
+        border: none
+        border-radius: 0
+        overflow: visible
+
+  &__logo
+    position: absolute
+    z-index: 2
+    top: 15px
+    right: 15px
+    display: block
+    width: 106px
+    height: 30px
+    color: #fff !important
+    border: 0 !important
+    transition: opacity .2s
+
+    @media $mq.notMobile
+      top: 30px
+      right: 30px
+
+    ^[0].is-testing &
+    ^[0].is-feed.is-result &
+      display: none
+
+    @media (max-width: 1024px)
+      ^[0].is-result &
+        display: none
+
+    &:hover
+      opacity: .6
+
+      @media $mq.notHover
+        opacity: 1
+
+  &-enter
+    position: relative
+    width: 640px
+    max-width: 100%
+    min-height: 480px
+    margin: 0 auto
+    padding: 20px 15px
+
+    @media $mq.notMobile
+      min-height: 600px
+      padding: 30px
+
+    @media $mq.desktop
+      padding: 70px 20px 0 40px
+
+    &__img
+      position: absolute
+      top: 190px
+      left: 460px
+
+    &__inner
+      position: relative
+      z-index: 1
+      width: 400px
+      max-width: 100%
+
+    &__headline
+      color: #70CFFF
+      font-weight: 700
+      letter-spacing: .2em
+      text-transform: uppercase
+
+    &__title
+      margin-top: 12px
+      color: #fff
+      font-size: 36px
+      font-weight: 700
+
+    &__subtitle
+      margin-top: 12px
+      color: #fff
+      font-size: 18px
+      font-weight: 500
+
+    &__text
+      margin-top: 20px
+      color: #fff
+      line-height: 1.5em
+
+      @media $mq.notMobile
+        margin-top: 35px
+
+      & p
+        padding: 0
+        margin: 0 !important
+
+        &:not(:last-child)
+          margin-bottom: 0.625em !important
+
+    &__btn
+      width: 160px
+      height: 44px
+      padding: 0
+      margin: 0
+      border: 0
+      margin-top: 30px
+      color: $colors.main
+      font-size: 18px
+      font-weight: 700
+      background-color: #fff
+      transition: opacity .2s
+
+      @media $mq.desktop
+        margin-top: 120px
+
+      &:hover
+        opacity: .6
+
+        @media $mq.notHover
+          opacity: 1
 
   &-test
     position: relative
@@ -63,15 +188,32 @@ $colors = {
       height: 600px
       padding: 30px 0 0
 
-    @media $mq.desktop
-      border: 3px solid #fff
-      border-radius: 10px
-      overflow: hidden
+    &__hint
+      position: absolute
+      z-index: 20
+      top: 20px
+      left: 0
+      right: 0
+      width: 320px
+      max-width: 100%
+      margin: 0 auto
+      padding: 10px 15px
+      color: $colors.main
+      line-height: 1.5em
+      text-align: center
+      border-radius: 5px
+      background-color: #fff
+      box-shadow: 0 5px 10px rgba(0,0,0,.15)
 
-      &.is-feed
-        border: none
-        border-radius: 0
-        overflow: visible
+      @media $mq.notMobile
+        width: 600px
+        padding: 22px 35px
+        font-size: 18px
+
+      & > div
+        width: 530px
+        max-width: 100%
+        margin: 0 auto
 
     &__overlay
       position: absolute
@@ -92,61 +234,35 @@ $colors = {
         visibility: visible
         opacity: 1
 
-    &__overlay-text
-      position: absolute
-      bottom: 20px
-      left: 0
-      right: 0
-      width: 530px
-      max-width: 100%
-      margin: 0 auto
-      padding: 0 15px
-      color: #fff
-      font-size: 14px
-      line-height: 1.3em
-
-      @media $mq.notMobile
-        bottom: 35px
-        padding: 0
-        font-size: 18px
-        line-height: 1.5em
-
-      & p
-        padding: 0
-        margin: 0 !important
-
-      & a
-        color: inherit !important
-        border-bottom: 1px solid currentColor !important
-        transition: opacity .2s
-
-        &:hover
-          opacity: .6
-
-          @media $mq.notHover
-            opacity: 1
-
     &__title
       position: relative
       z-index: 1
       width: 640px
       max-width: 100%
+      margin-bottom: 10px
       color: #fff
       font-weight: 700
       text-align: center
 
       @media $mq.notMobile
-        font-size: 24px
+        margin-bottom: 24px
+        font-size: 22px
 
     &__months
       position: relative
       z-index: 10
       width: 260px
       max-width: 100%
-      margin-top: 24px
+      transition: transform .6s .2s
 
       @media $mq.notMobile
         width: 530px
+
+      ^[0].is-confirmed &
+        transform: translate3d(0, 45px, 0)
+
+        @media $mq.notMobile
+          transform: translate3d(0, 110px, 0)
 
     &__goods
       display: flex
@@ -157,6 +273,35 @@ $colors = {
 
       @media $mq.notMobile
         width: 590px
+
+    &__confirm-btn
+      position: absolute
+      left: 0
+      right: 0
+      bottom: 10px
+      display: block
+      width: 200px
+      height: 44px
+      padding: 0
+      margin: 0 auto
+      border: 0
+      color: $colors.main
+      font-size: 18px
+      font-weight: 700
+      background-color: #fff
+      transition: opacity .2s
+
+      @media $mq.notMobile
+        bottom: 40px
+        width: 268px
+        height: 70px
+        font-size: 24px
+
+      &:hover
+        opacity: .6
+
+        @media $mq.notHover
+          opacity: 1
 
   &-months
     display: flex
@@ -223,6 +368,9 @@ $colors = {
       transform: rotate(45deg)
       cursor: pointer
 
+      ^[0].is-confirmed &
+        display: none
+
       &::before
       &::after
         content: ''
@@ -233,7 +381,7 @@ $colors = {
         right: 0
         margin: auto
         border-radius: 5px
-        background-color: #00AAFF
+        background-color: $colors.main
 
       &::before
         width: 12px
@@ -244,10 +392,11 @@ $colors = {
         height: 12px
 
     &.is-active
-      color: #97CF26
+      color: $colors.extra
 
     &.is-selected
       background-position: center
+      background-color: $colors.extra
       background-size: cover
 
       &::after
@@ -257,64 +406,49 @@ $colors = {
       & > div
         display: block
 
+    &.is-correct
+      background-color: #97CF26
+
+    &.is-incorrect
+      background-color: #FF6163
+
   &-good
     position: absolute
     z-index: 10
     touch-action: none
 
-    &--coat
-      left: calc((100% -  290px) / 2 + 18px)
-
-      @media $mq.notMobile
-        left: calc((100% - 640px) / 2 + 64px)
-
-    &--buzova
-      left: calc((100% - 320px) / 2 + 128px)
-
-      @media $mq.notMobile
-        left: calc((100% - 640px) / 2 + 278px)
-
     &--farm
+      z-index: 11
       left: calc((100% - 320px) / 2 + 102px)
 
       @media $mq.notMobile
         left: calc((100% - 640px) / 2 + 232px)
 
-    &--furs
-      left: calc((100% - 320px) / 2 + 68px)
-
-      @media $mq.notMobile
-        left: calc((100% - 640px) / 2 + 148px)
-
-    &--iphone
-      bottom: 78px
-      left: calc((100% - 320px) / 2 + 192px)
-
-      @media $mq.notMobile
-        bottom: 90px
-        left: calc((100% - 640px) / 2 + 380px)
-
     &--jersey
+      z-index: 12
       left: calc((100% -  290px) / 2 + 46px)
 
       @media $mq.notMobile
         left: calc((100% - 640px) / 2 + 116px)
 
-    &--kokoshnik
-      bottom: 78px
-      left: calc((100% -  290px) / 2 + 54px)
+    &--coat
+      z-index: 11
+      left: calc((100% -  290px) / 2 + 18px)
 
       @media $mq.notMobile
-        bottom: 110px
-        left: calc((100% - 640px) / 2 + 124px)
+        left: calc((100% - 640px) / 2 + 64px)
 
-    &--priora
-      left: calc((100% - 320px) / 2 + 174px)
+    &--sneakers
+      z-index: 12
+      bottom: 68px
+      left: calc((100% - 320px) / 2 + 110px)
 
       @media $mq.notMobile
-        left: calc((100% - 640px) / 2 + 344px)
+        bottom: 102px
+        left: calc((100% - 640px) / 2 + 254px)
 
     &--scooter
+      z-index: 14
       bottom: 62px
       left: calc((100% - 320px) / 2 + 190px)
 
@@ -322,7 +456,33 @@ $colors = {
         bottom: 90px
         left: calc((100% - 640px) / 2 + 380px)
 
+    &--priora
+      z-index: 12
+      left: calc((100% - 320px) / 2 + 174px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 344px)
+
+    &--kokoshnik
+      z-index: 14
+      bottom: 102px
+      left: calc((100% -  290px) / 2 + 64px)
+
+      @media $mq.notMobile
+        bottom: 156px
+        left: calc((100% - 640px) / 2 + 166px)
+
+    &--iphone
+      z-index: 11
+      bottom: 78px
+      left: calc((100% - 320px) / 2 + 192px)
+
+      @media $mq.notMobile
+        bottom: 90px
+        left: calc((100% - 640px) / 2 + 380px)
+
     &--shark
+      z-index: 13
       bottom: 86px
       left: calc((100% - 320px) / 2 + 232px)
 
@@ -330,13 +490,18 @@ $colors = {
         bottom: 130px
         left: calc((100% - 640px) / 2 + 440px)
 
-    &--sneakers
-      bottom: 68px
-      left: calc((100% - 320px) / 2 + 110px)
+    &--buzova
+      left: calc((100% - 320px) / 2 + 128px)
 
       @media $mq.notMobile
-        bottom: 102px
-        left: calc((100% - 640px) / 2 + 254px)
+        left: calc((100% - 640px) / 2 + 278px)
+
+    &--furs
+      z-index: 13
+      left: calc((100% - 320px) / 2 + 68px)
+
+      @media $mq.notMobile
+        left: calc((100% - 640px) / 2 + 148px)
 
     @media $mq.mobile
       transform: scale(.645)
@@ -358,9 +523,204 @@ $colors = {
         top: 100%
         left: 50%
         margin-top: 4px
-        color: #97CF26
+        color: $colors.extra
         font-size: 18px
         font-weight: 700
         white-space: nowrap
         text-align: center
         transform: translate3d(-50%, 0, 0)
+
+  &-result
+    position: relative
+    width: 580px
+    max-width: 100%
+    margin: 0 auto
+    padding: 15px 0
+
+    @media $mq.notMobile
+      padding: 30px 0
+
+    @media $mq.desktop
+      min-height: 600px
+      //padding: 50px 0
+
+    &__img
+      position: absolute
+      top: 50px
+      left: 220px
+      display: block
+      width: 90px
+
+      @media $mq.notMobile
+        left: auto
+        right: 0
+        width: auto
+
+    &__head
+      position: relative
+      z-index: 1
+
+      @media $mq.mobile
+        padding: 0 15px
+
+    &__headline
+      color: #fff
+
+    &__title
+      margin-top: 10px
+      color: #fff
+      font-size: 26px
+      font-weight: 700
+
+      @media $mq.notMobile
+        margin-top: 16px
+        font-size: 36px
+
+    &__subtitle
+      margin-top: 8px
+      color: #fff
+
+      @media $mq.notMobile
+        font-size: 18px
+
+    &__share
+      min-height: 44px
+      margin-top: 20px
+
+      @media $mq.notMobile
+        margin-top: 30px
+
+    &__restart
+      display: inline-flex
+      align-items: center
+      margin-top: 20px
+      color: #fff
+      font-size: 18px
+      cursor: pointer
+      opacity: .6
+      transition: opacity .2s
+
+      @media $mq.notMobile
+        margin-top: 30px
+
+      &:hover
+        opacity: 1
+
+        @media $mq.notHover
+          opacity: .6
+
+      & > svg
+        margin-left: 6px
+
+    &__bottom
+      position: relative
+      z-index: 2
+      margin-top: 20px
+      padding: 15px
+      background-color: #fff
+
+      @media $mq.notMobile
+        margin-top: 44px
+        padding: 25px 30px
+
+    &__logo
+      position: absolute
+      top: -20px
+      right: 12px
+      transform: translate3d(0, -100%, 0)
+      display: block
+      width: 88px
+      color: #fff !important
+      border: 0 !important
+
+      @media $mq.notMobile
+        top: -15px
+
+      @media $mq.desktop
+        display: none
+
+      ^[0].is-feed &
+        display: block
+
+    &__text
+      color: #6E6E6E
+      line-height: 1.5em
+
+    &__btn
+      display: block
+      width: 160px
+      height: 44px
+      margin: 24px auto 0
+      color: #fff !important
+      font-size: 18px
+      font-weight: 700
+      text-align: center
+      line-height: 44px
+      border: 0 !important
+      background-color: $colors.main
+      transition: opacity .2s
+
+      &:hover
+        opacity: .6
+
+        @media $mq.notHover
+          opacity: 1
+
+  .likely
+    &--custom
+      display: flex
+
+    &__widget
+      flex-shrink: 0
+      display: flex
+      align-items: center
+      justify-content: center
+      min-width 58px
+      height 44px
+      color #fff
+      border 1px solid currentColor
+      background-color transparent
+      cursor: pointer
+      transition: opacity .2s
+
+      &:not(:last-child)
+        margin-right 10px
+
+      &:hover
+        opacity: .6
+
+        @media $mq.notHover
+          opacity: 1
+
+      &--facebook
+        padding: 0 13px 0 10px
+
+    &__counter
+      display: none
+
+    &__icon
+      background-color transparent
+
+      & svg
+        display: block
+        width: 25px
+        height: @width
+        fill currentColor
+
+      &--facebook
+        & svg
+          width: 20px
+          height: @width
+
+      &--facebook
+
+        @media $mq.notMobile
+          margin-right 10px
+
+    &__button
+      display: none
+      font-size 18px
+      line-height 1
+
+      @media $mq.notMobile
+        display: block
