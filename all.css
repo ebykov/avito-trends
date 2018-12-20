@@ -249,13 +249,12 @@
   position: relative;
   width: 640px;
   max-width: 100%;
-  min-height: 480px;
+  min-height: 600px;
   margin: 0 auto;
   padding: 20px 15px;
 }
 @media (min-width: 680px) {
   .avito-trends-enter {
-    min-height: 600px;
     padding: 30px;
   }
 }
@@ -266,8 +265,20 @@
 }
 .avito-trends-enter__img {
   position: absolute;
-  top: 190px;
-  left: 460px;
+  top: 380px;
+  left: 190px;
+}
+@media (min-width: 375px) {
+  .avito-trends-enter__img {
+    top: 330px;
+    left: 220px;
+  }
+}
+@media (min-width: 568px) {
+  .avito-trends-enter__img {
+    top: 190px;
+    left: 460px;
+  }
 }
 .avito-trends-enter__inner {
   position: relative;
@@ -644,6 +655,12 @@
   bottom: 14px;
   left: calc((100% - 320px) / 2 + 55px);
 }
+@media (min-width: 375px) {
+  .avito-trends-good--farm {
+    bottom: 20px;
+    left: calc((100% - 320px) / 2 + 58px);
+  }
+}
 @media (min-width: 680px) {
   .avito-trends-good--farm {
     bottom: 22px;
@@ -654,6 +671,12 @@
   z-index: 12;
   bottom: 20px;
   left: calc((100% - 290px) / 2 + 20px);
+}
+@media (min-width: 375px) {
+  .avito-trends-good--jersey {
+    bottom: 32px;
+    left: autp;
+  }
 }
 @media (min-width: 680px) {
   .avito-trends-good--jersey {
@@ -666,6 +689,12 @@
   bottom: 50px;
   left: calc((100% - 290px) / 2 + 34px);
 }
+@media (min-width: 375px) {
+  .avito-trends-good--coat {
+    bottom: 98px;
+    left: calc((100% - 320px) / 2 + 26px);
+  }
+}
 @media (min-width: 680px) {
   .avito-trends-good--coat {
     bottom: 130px;
@@ -676,6 +705,12 @@
   z-index: 12;
   bottom: 140px;
   left: calc((100% - 320px) / 2 + 246px);
+}
+@media (min-width: 375px) {
+  .avito-trends-good--sneakers {
+    bottom: 166px;
+    left: calc((100% - 320px) / 2 + 256px);
+  }
 }
 @media (min-width: 680px) {
   .avito-trends-good--sneakers {
@@ -688,6 +723,12 @@
   bottom: 66px;
   left: calc((100% - 320px) / 2 + 146px);
 }
+@media (min-width: 375px) {
+  .avito-trends-good--scooter {
+    bottom: 66px;
+    left: calc((100% - 320px) / 2 + 164px);
+  }
+}
 @media (min-width: 680px) {
   .avito-trends-good--scooter {
     bottom: 98px;
@@ -697,6 +738,11 @@
 .avito-trends-good--priora {
   z-index: 12;
   left: calc((100% - 320px) / 2 + 180px);
+}
+@media (min-width: 375px) {
+  .avito-trends-good--priora {
+    left: calc((100% - 320px) / 2 + 192px);
+  }
 }
 @media (min-width: 680px) {
   .avito-trends-good--priora {
@@ -708,16 +754,38 @@
   bottom: 130px;
   left: calc((100% - 290px) / 2 + 70px);
 }
+@media (min-width: 375px) {
+  .avito-trends-good--kokoshnik {
+    bottom: 124px;
+    left: calc((100% - 320px) / 2 + 92px);
+  }
+}
 @media (min-width: 680px) {
   .avito-trends-good--kokoshnik {
     bottom: 180px;
     left: calc((100% - 640px) / 2 + 226px);
   }
 }
+@media (min-width: 375px) {
+  .avito-trends-good--fridge {
+    left: calc((100% - 290px) / 2 - 30px);
+  }
+}
+@media (min-width: 680px) {
+  .avito-trends-good--fridge {
+    left: auto;
+  }
+}
 .avito-trends-good--iphone {
   z-index: 11;
   bottom: 84px;
   left: calc((100% - 320px) / 2 + 210px);
+}
+@media (min-width: 375px) {
+  .avito-trends-good--iphone {
+    bottom: 98px;
+    left: calc((100% - 320px) / 2 + 220px);
+  }
 }
 @media (min-width: 680px) {
   .avito-trends-good--iphone {
@@ -730,6 +798,12 @@
   bottom: 86px;
   left: calc((100% - 320px) / 2 + 232px);
 }
+@media (min-width: 375px) {
+  .avito-trends-good--shark {
+    bottom: 100px;
+    left: calc((100% - 320px) / 2 + 246px);
+  }
+}
 @media (min-width: 680px) {
   .avito-trends-good--shark {
     bottom: 148px;
@@ -738,6 +812,11 @@
 }
 .avito-trends-good--buzova {
   left: calc((100% - 320px) / 2 + 115px);
+}
+@media (min-width: 375px) {
+  .avito-trends-good--buzova {
+    left: calc((100% - 320px) / 2 + 136px);
+  }
 }
 @media (min-width: 680px) {
   .avito-trends-good--buzova {
@@ -748,6 +827,11 @@
   z-index: 13;
   bottom: 15px;
   left: calc((100% - 320px) / 2 + 94px);
+}
+@media (min-width: 375px) {
+  .avito-trends-good--furs {
+    left: calc((100% - 320px) / 2 + 104px);
+  }
 }
 @media (min-width: 680px) {
   .avito-trends-good--furs {
