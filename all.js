@@ -8612,8 +8612,8 @@ exports.default = {
   subtitle: 'Проверьте, насколько хорошо вы помните тренды 2018 года',
   text: '<p>Авито — камертон российского общества. Мы собрали товары, интерес к которым рос в разное время уходящего года. Среди них есть и хайповая акула «Блохэй», и обычный холодильник.</p><p>Перетащите предметы в ячейки и угадайте, в каком месяце они были на пике популярности.</p>',
   link: 'https://www.avito.ru/rossiya?utm_source=vcru&utm_medium=logo&utm_campaign=trends&utm_term=avito&avcm=20181220-z-ar-article-01-w-cpm-a--avito',
-  img: 'https://leonardo.osnova.io/f0df8d37-0126-1084-9372-21d6bb3649f2/',
-  img2x: 'https://leonardo.osnova.io/ca023a75-748f-69d3-d954-951c57a19433/',
+  img: 'https://leonardo.osnova.io/9970a251-816a-8099-b3f9-500a6a72342f/',
+  img2x: 'https://leonardo.osnova.io/fabdef6f-c545-0f17-c970-bcb99bcee939/',
   hint: 'Перетащите товары в те месяцы,<br>когда они были на пике популярности',
   months: [{
     name: 'Янв'
