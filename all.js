@@ -950,8 +950,7 @@ var Special = function (_BaseSpecial) {
     key: 'restart',
     value: function restart() {
       EL.main.classList.remove('is-result');
-
-      EL.tTitle.style.opacity = '';
+      EL.main.classList.add('is-testing');
 
       var leaveList = EL.months.querySelectorAll('.js-avito-month-leave');
       [].slice.call(leaveList).forEach(function (leave) {
@@ -1059,24 +1058,21 @@ var Special = function (_BaseSpecial) {
           month.classList.add('is-selected');
           month.style.backgroundImage = 'url(' + good.dataset.img + ')';
 
-          if (_this5.hintShowed >= 2 && _data2.default.months[monthIndex].text) {
-            console.log('show hint');
-            _this5.hintShowed = 0;
+          if (!_this5.hintShowed) {
+            _this5.hintShowed = true;
+          } else if (_data2.default.months[monthIndex].text) {
+            _this5.hintShowed = false;
 
-            (0, _animate.animate)(EL.tTitle, 'fadeOut', '200ms').then(function () {
-              EL.tTitle.innerHTML = _data2.default.months[monthIndex].text;
-              (0, _animate.animate)(EL.tTitle, 'fadeIn', '400ms', '100ms').then(function () {
-                clearTimeout(_this5.hintTimer);
-                _this5.hintTimer = setTimeout(function () {
-                  (0, _animate.animate)(EL.tTitle, 'fadeOut', '200ms').then(function () {
-                    EL.tTitle.innerHTML = _data2.default.hint;
-                    (0, _animate.animate)(EL.tTitle, 'fadeIn', '400ms', '100ms');
-                  });
-                }, 2000);
+            var hint = (0, _dom.makeElement)('div', CSS.main + '-test__hint', {
+              innerHTML: '<div>' + _data2.default.months[monthIndex].text + '</div>'
+            });
+
+            EL.test.appendChild(hint);
+            (0, _animate.animate)(hint, 'fadeInDown').then(function () {
+              (0, _animate.animate)(hint, 'fadeOutLeft', '400ms', '2s').then(function () {
+                EL.test.removeChild(hint);
               });
             });
-          } else {
-            _this5.hintShowed += 1;
           }
 
           if (_this5.answersCount === _data2.default.goods.length) {
@@ -1112,7 +1108,7 @@ var Special = function (_BaseSpecial) {
       EL.mBg = (0, _dom.makeElement)('div', CSS.main + '__bg');
       EL.mInner = (0, _dom.makeElement)('div', CSS.main + '__inner');
       EL.mLogo = (0, _dom.makeElement)('a', CSS.main + '__logo', {
-        href: 'https://www.avito.ru/',
+        href: _data2.default.link,
         target: '_blank',
         innerHTML: _svg2.default.logo
       });
@@ -1236,7 +1232,7 @@ var Special = function (_BaseSpecial) {
         textContent: _data2.default.promo.text
       });
       EL.rBtn = (0, _dom.makeElement)('a', CSS.main + '-result__btn', {
-        href: '#',
+        href: _data2.default.promo.link,
         target: '_blank',
         textContent: 'Начать'
       });
@@ -8615,6 +8611,7 @@ exports.default = {
   title: 'Пики хайпа',
   subtitle: 'Проверьте, насколько хорошо вы помните тренды 2018 года',
   text: '<p>Авито — камертон российского общества. Мы собрали товары, интерес к которым рос в разное время уходящего года. Среди них есть и хайповая акула «Блохэй», и обычный холодильник.</p><p>Перетащите предметы в ячейки и угадайте, в каком месяце они были на пике популярности.</p>',
+  link: 'https://www.avito.ru/rossiya?utm_source=vcru&utm_medium=logo&utm_campaign=trends&utm_term=avito&avcm=20181220-z-ar-article-01-w-cpm-a--avito',
   img: 'https://leonardo.osnova.io/f0df8d37-0126-1084-9372-21d6bb3649f2/',
   img2x: 'https://leonardo.osnova.io/ca023a75-748f-69d3-d954-951c57a19433/',
   hint: 'Перетащите товары в те месяцы,<br>когда они были на пике популярности',
@@ -8655,78 +8652,79 @@ exports.default = {
   goods: [{
     id: 'farm',
     name: 'Ферма',
-    img: 'https://leonardo.osnova.io/d7f5884b-63a3-3dcd-e2fc-7b6f375e14a4/',
-    img2x: 'https://leonardo.osnova.io/109287fe-35fe-e1b5-3e93-d3a0b116eb4a/',
+    img: 'https://leonardo.osnova.io/f5ce5765-9f39-1c26-2d14-de72fbc8d1fa/',
+    img2x: 'https://leonardo.osnova.io/25bfc6d8-d407-ed36-e592-60ab704a2cf8/',
     fillImg: 'https://leonardo.osnova.io/86360545-953a-29be-f212-fddec5ba42ad/'
   }, {
     id: 'jersey',
     name: 'Олимпийская форма 2018',
-    img: 'https://leonardo.osnova.io/1c7977b5-45cc-3e01-f341-0ceff4b51249/',
-    img2x: 'https://leonardo.osnova.io/04485667-498f-39f9-b8f1-682c667e50f6/',
+    img: 'https://leonardo.osnova.io/7456dd53-2310-7279-6383-e6eda9674264/',
+    img2x: 'https://leonardo.osnova.io/a536ede7-fd8d-5c47-0bcc-3c7fdb9bb3d1/',
     fillImg: 'https://leonardo.osnova.io/06203626-f92f-39f7-9ffd-40e921a95e0a/'
   }, {
     id: 'coat',
     name: 'Пальто',
-    img: 'https://leonardo.osnova.io/ee3a1a44-d84d-fbc4-361d-c9e10603f538/',
-    img2x: 'https://leonardo.osnova.io/e240d2fc-2e03-5078-c351-f108e6c74abd/',
+    img: 'https://leonardo.osnova.io/97e8c509-2539-faa8-2acf-619824465dc4/',
+    img2x: 'https://leonardo.osnova.io/f1a5c572-fcab-abdd-7297-a54829cee73c/',
     fillImg: 'https://leonardo.osnova.io/c759ffbd-a251-e7ee-d12b-4f3b3e5f6cbd/'
   }, {
     id: 'sneakers',
-    name: 'Кроссовки',
-    img: 'https://leonardo.osnova.io/88ac0b9c-102a-1f4a-73f8-2daefc03b06d/',
-    img2x: 'https://leonardo.osnova.io/cf831544-804b-0529-8a21-7d9a000a3bf6/',
+    name: 'Лимитированные кроссовки',
+    img: 'https://leonardo.osnova.io/bfd33c61-b1d1-9dfc-1b6f-765275ee8103/',
+    img2x: 'https://leonardo.osnova.io/094ca5ff-157e-420e-f118-d45b215fc037/',
     fillImg: 'https://leonardo.osnova.io/5416fb06-a138-ed3c-2a00-dd7e9792accc/'
   }, {
     id: 'scooter',
     name: 'Электросамокат',
-    img: 'https://leonardo.osnova.io/0dad94cf-037e-7b47-3c0e-d06fb4a5fc27/',
-    img2x: 'https://leonardo.osnova.io/d6ee3961-c16d-1080-322a-d2d1c1bfa403/',
+    img: 'https://leonardo.osnova.io/6b08841f-4e3f-4867-9880-4a617e7781d9/',
+    img2x: 'https://leonardo.osnova.io/8f0c8d9b-a046-b9dd-3505-2e0893c562e6/',
     fillImg: 'https://leonardo.osnova.io/87a0b0df-6cca-23a1-a199-e9946072d7eb/'
   }, {
     id: 'priora',
     name: 'Приора',
-    img: 'https://leonardo.osnova.io/e907b988-4c83-852b-fada-d42656f76db3/',
-    img2x: 'https://leonardo.osnova.io/94fdd430-4609-b93d-f58a-eaddfd50cc0e/',
+    img: 'https://leonardo.osnova.io/4005a7b7-162d-a85c-a452-13fb285ecd23/',
+    img2x: 'https://leonardo.osnova.io/c31f7585-dd8d-1128-4084-180da34d4cd2/',
     fillImg: 'https://leonardo.osnova.io/a98549a5-3acc-7fba-90a2-c58832924c21/'
   }, {
     id: 'kokoshnik',
     name: 'Кокошник',
-    img: 'https://leonardo.osnova.io/ac2cc380-df19-5280-0a82-99311ea317e3/',
-    img2x: 'https://leonardo.osnova.io/1b1b1ae5-3644-d268-1f59-a954d9320dc1/',
+    img: 'https://leonardo.osnova.io/9c207559-eafd-ccd8-2a67-8a86ce2b2eb7/',
+    img2x: 'https://leonardo.osnova.io/b7ad57df-284a-6c5d-95b5-633c85e64b59/',
     fillImg: 'https://leonardo.osnova.io/e3c50deb-b71a-0023-da2f-bb98238ab64a/'
   }, {
     id: 'fridge',
     name: 'Холодильник',
-    img: 'https://leonardo.osnova.io/df294ec8-07ae-5e3f-b0eb-fcd12aa85199/',
-    img2x: 'https://leonardo.osnova.io/895efabd-6f08-6f45-27ff-cc25419bb723/',
+    img: 'https://leonardo.osnova.io/0b67e6f1-804b-6bd3-478b-0c1448076906/',
+    img2x: 'https://leonardo.osnova.io/996f673e-f074-fb89-f19b-89875e9fb9d2/',
     fillImg: 'https://leonardo.osnova.io/beca7eb8-5fed-f0df-da87-a0cc39a2ae1b/'
   }, {
     id: 'iphone',
     name: 'iPhone',
-    img: 'https://leonardo.osnova.io/8498746b-cd9d-3b51-fe26-d14333cfc394/',
-    img2x: 'https://leonardo.osnova.io/dbd50a38-6300-4208-c6cd-dbac66e051fc/',
+    img: 'https://leonardo.osnova.io/b07e5284-5469-a988-4424-0a5b00678c9e/',
+    img2x: 'https://leonardo.osnova.io/39dee8b6-d6f0-58fc-a91d-5a5e5da9b80a/',
     fillImg: 'https://leonardo.osnova.io/28a0e9c0-17b8-6634-9a09-e84c392eaf05/'
   }, {
     id: 'shark',
     name: 'Акула из IKEA',
-    img: 'https://leonardo.osnova.io/df5422a7-235b-eac6-9d8c-3580eb1f6377/',
-    img2x: 'https://leonardo.osnova.io/8ad9190f-7eb9-0b10-2cff-5e1062696f21/',
+    img: 'https://leonardo.osnova.io/973a22a3-d2c9-07a8-6c63-3730d6bf576e/',
+    img2x: 'https://leonardo.osnova.io/cc6c67ba-b6ff-764d-cddf-323d3122ebe3/',
     fillImg: 'https://leonardo.osnova.io/a0c9117b-0c62-62a3-014d-0d6398f757e0/'
   }, {
     id: 'buzova',
     name: 'Картонная Бузова',
-    img: 'https://leonardo.osnova.io/32b0ada2-2452-4e98-f27a-4df4ce1bc8cd/',
-    img2x: 'https://leonardo.osnova.io/559d7d3f-4573-57b3-6b8b-a337b9973a0b/',
+    img: 'https://leonardo.osnova.io/55852294-9df8-2a4d-1c05-bdfaeb43514a/',
+    img2x: 'https://leonardo.osnova.io/855136e7-2a53-d724-cf6c-e60cc5fe0eb7/',
     fillImg: 'https://leonardo.osnova.io/2864fef8-f069-15cd-7e0f-a024cf69d437/'
   }, {
     id: 'furs',
     name: 'Норковая шуба',
-    img: 'https://leonardo.osnova.io/59066853-f797-4223-62db-9553d7f34f68/',
-    img2x: 'https://leonardo.osnova.io/cfcaa7f8-dd61-782d-515e-281dc9b7c7e9/',
+    img: 'https://leonardo.osnova.io/97bc749d-ded0-aba5-44bf-e136575acb81/',
+    img2x: 'https://leonardo.osnova.io/a01f11bf-87a1-376b-4735-1900585591ad/',
     fillImg: 'https://leonardo.osnova.io/68c260c9-c264-834c-e9f6-446a1897b1ee/'
   }],
   promo: {
-    text: 'Всё вокруг меняется очень быстро. Каждый месяц — новые тренды. И Авито постоянно запускает новые фичи и сервисы, чтобы вам было проще и удобнее искать то, что вам нужно. И продавать то, что нужно другим.'
+    text: 'Всё вокруг меняется очень быстро. Каждый месяц — новые тренды. И Авито постоянно запускает новые фичи и сервисы, чтобы вам было проще и удобнее искать то, что вам нужно. И продавать то, что нужно другим.',
+    link: 'https://www.avito.ru/rossiya?utm_source=vcru&utm_medium=logo&utm_campaign=trends&utm_term=avito&avcm=20181220-z-ar-article-01-w-cpm-a--avito'
   },
   results: [{
     range: [0, 1],
